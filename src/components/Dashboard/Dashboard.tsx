@@ -295,7 +295,24 @@ const Dashboard: React.FC = () => {
             <div className="card p-8 text-center">
               <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">No Properties Yet</h3>
-    <PropertiesManager />
+              <p className="text-gray-600 mb-4">Start by adding your first property to begin evaluating deals.</p>
+              <button className="btn-primary">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Property
+              </button>
+            </div>
+
+            <PropertiesManager />
+          </div>
+        ) : (
+          <div className="text-center">
+            <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Team Found</h3>
+            <p className="text-gray-600">You need to be part of a team to access the dashboard.</p>
+          </div>
+        )}
+      </main>
+    </div>
   );
 };
 
