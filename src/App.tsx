@@ -1,102 +1,66 @@
-import React, { useState } from 'react';
-import { Toaster } from 'react-hot-toast';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { LoginForm, RegisterForm, ForgotPasswordForm, AuthGuard } from './components/Auth';
-import TeamSetup from './components/Team/TeamSetup';
-import Dashboard from './components/Dashboard/Dashboard';
-import LoadingSpinner from './components/UI/LoadingSpinner';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuthStore } from '@/stores/authStore';
+import { Layout } from '@/components/Layout/Layout';
+import { ProtectedRoute } from '@/components/Auth/ProtectedRoute';
+import { Login } from '@/components/Auth/Login';
+import { Signup } from '@/components/Auth/Signup';
+import { Profile } from '@/components/Auth/Profile';
+import { EvaluationPage } from '@/pages/EvaluationPage';
+import { ComparisonPage } from '@/pages/ComparisonPage';
+import { InspectionPage } from '@/pages/InspectionPage';
+import { MortgagePage } from '@/pages/MortgagePage';
+import { MovingPage } from '@/pages/MovingPage';
+import { LoadingPage } from '@/components/UI/LoadingSpinner';
+import { ErrorBoundary } from '@/components/UI/ErrorBoundary';
 
-// Auth flow component that handles different authentication states
-const AuthFlow: React.FC = () => {
-  const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot-password'>('login');
+function App() {
+  const { initialize, isInitialized } = useAuthStore();
 
-  const renderAuthForm = () => {
-    switch (authMode) {
-      case 'register':
-        return (
-          <RegisterForm 
-            onSwitchToLogin={() => setAuthMode('login')} 
-          />
-        );
-      case 'forgot-password':
-        return (
-          <ForgotPasswordForm 
-            onSwitchToLogin={() => setAuthMode('login')} 
-          />
-        );
-      default:
-        return (
-          <LoginForm 
-            onSwitchToRegister={() => setAuthMode('register')}
-            onSwitchToForgotPassword={() => setAuthMode('forgot-password')}
-          />
-        );
-    }
-  };
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
-  return renderAuthForm();
-};
-
-// Main app content component
-const AppContent: React.FC = () => {
-  const { user, userProfile, team, loading } = useAuth();
-
-  // Show loading spinner while checking authentication
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" text="Loading Hausee Navigator..." />
-      </div>
-    );
+  // Show loading screen while initializing
+  if (!isInitialized) {
+    return <LoadingPage text="Initializing Hausee Navigator..." />;
   }
 
-  // User is not authenticated - show auth forms
-  if (!user) {
-    return <AuthFlow />;
-  }
-
-  // User is authenticated but doesn't have a team - show team setup
-  if (!team) {
-    return <TeamSetup />;
-  }
-
-  // User is authenticated and has a team - show dashboard
-  return <Dashboard />;
-};
-
-// Root App component
-const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 3000,
-            iconTheme: {
-              primary: '#10b981',
-              secondary: '#fff',
-            },
-          },
-          error: {
-            duration: 5000,
-            iconTheme: {
-              primary: '#ef4444',
-              secondary: '#fff',
-            },
-          },
-        }}
-      />
-      <div className="App">
-        <AppContent />
-      </div>
-    </AuthProvider>
+    <ErrorBoundary>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
+          {/* Protected Routes with Layout */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
+            {/* Main Navigation Routes */}
+            <Route index element={<Navigate to="/evaluation" replace />} />
+            <Route path="evaluation" element={<EvaluationPage />} />
+            <Route path="comparison" element={<ComparisonPage />} />
+            <Route path="inspection" element={<InspectionPage />} />
+            <Route path="mortgage" element={<MortgagePage />} />
+            <Route path="moving" element={<MovingPage />} />
+            
+            {/* Profile Route */}
+            <Route path="profile" element={<Profile />} />
+          </Route>
+
+          {/* Catch all route */}
+          <Route path="*" element={<Navigate to="/evaluation" replace />} />
+        </Routes>
+      </Router>
+    </ErrorBoundary>
   );
-};
+}
 
 export default App;
