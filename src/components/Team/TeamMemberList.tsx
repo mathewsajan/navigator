@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  User, 
-  Crown, 
-  Shield, 
-  Eye, 
-  MoreVertical, 
-  UserMinus, 
-  UserCheck,
-  Clock,
-  Wifi,
-  WifiOff
-} from 'lucide-react';
+import { User, Crown, Shield, Eye, MoveVertical as MoreVertical, UserMinus, UserCheck, Clock, Wifi, WifiOff } from 'lucide-react';
 import { formatRelativeTime } from '@/lib/utils';
 import type { TeamMember, UserPresence, TeamRole } from '@/types/team';
 

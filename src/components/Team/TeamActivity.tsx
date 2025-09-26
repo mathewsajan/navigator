@@ -1,14 +1,5 @@
 import React from 'react';
-import { 
-  User, 
-  Home, 
-  ClipboardCheck, 
-  Image, 
-  Settings, 
-  UserPlus, 
-  UserMinus,
-  Clock
-} from 'lucide-react';
+import { User, Chrome as Home, ClipboardCheck, Image, Settings, UserPlus, UserMinus, Clock } from 'lucide-react';
 import { formatRelativeTime } from '@/lib/utils';
 import type { TeamActivity as TeamActivityType, ActivityAction } from '@/types/team';
 
