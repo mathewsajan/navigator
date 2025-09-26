@@ -7,7 +7,8 @@ import {
   CalendarIcon,
   MapPinIcon,
   PencilIcon,
-  TrashIcon
+  TrashIcon,
+  ClipboardDocumentListIcon
 } from '@heroicons/react/24/outline';
 
 interface PropertyDetailsProps {
@@ -15,6 +16,7 @@ interface PropertyDetailsProps {
   onClose: () => void;
   onEdit: (property: Property) => void;
   onDelete: (property: Property) => void;
+  onViewEvaluations?: (property: Property) => void;
 }
 
 export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
@@ -22,6 +24,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   onClose,
   onEdit,
   onDelete,
+  onViewEvaluations,
 }) => {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -56,6 +59,15 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             >
               <PencilIcon className="w-5 h-5" />
             </button>
+            {onViewEvaluations && (
+              <button
+                onClick={() => onViewEvaluations(property)}
+                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                aria-label="View evaluations"
+              >
+                <ClipboardDocumentListIcon className="w-5 h-5" />
+              </button>
+            )}
             <button
               onClick={() => onDelete(property)}
               className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
@@ -177,6 +189,14 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           >
             Close
           </button>
+          {onViewEvaluations && (
+            <button
+              onClick={() => onViewEvaluations(property)}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              View Evaluations
+            </button>
+          )}
           <button
             onClick={() => onEdit(property)}
             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"

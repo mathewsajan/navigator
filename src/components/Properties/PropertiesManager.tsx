@@ -6,9 +6,10 @@ import { PropertyFilters } from './PropertyFilters';
 import { PropertyForm } from './PropertyForm';
 import { PropertyDetails } from './PropertyDetails';
 import { DeleteConfirmation } from './DeleteConfirmation';
+import { EvaluationsManager } from '../Evaluation';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
-type ModalType = 'add' | 'edit' | 'view' | 'delete' | null;
+type ModalType = 'add' | 'edit' | 'view' | 'delete' | 'evaluations' | null;
 
 export const PropertiesManager: React.FC = () => {
   const {
@@ -51,6 +52,10 @@ export const PropertiesManager: React.FC = () => {
     setModalType('delete');
   };
 
+  const handleViewEvaluations = (property: Property) => {
+    setSelectedProperty(property);
+    setModalType('evaluations');
+  };
   const handleCloseModal = () => {
     setModalType(null);
     setSelectedProperty(null);
@@ -119,6 +124,7 @@ export const PropertiesManager: React.FC = () => {
           onEdit={handleEditProperty}
           onDelete={handleDeleteProperty}
           onView={handleViewProperty}
+          onViewEvaluations={handleViewEvaluations}
         />
 
         {/* Floating Action Button (Mobile) */}
@@ -146,6 +152,7 @@ export const PropertiesManager: React.FC = () => {
             onClose={handleCloseModal}
             onEdit={handleEditProperty}
             onDelete={handleDeleteProperty}
+            onViewEvaluations={handleViewEvaluations}
           />
         )}
 
@@ -155,6 +162,16 @@ export const PropertiesManager: React.FC = () => {
             onConfirm={handleDeleteConfirm}
             onCancel={handleCloseModal}
           />
+        )}
+
+        {modalType === 'evaluations' && selectedProperty && (
+          <div className="fixed inset-0 bg-white z-50">
+            <EvaluationsManager
+              propertyId={selectedProperty.id}
+              propertyAddress={selectedProperty.address}
+              onBack={handleCloseModal}
+            />
+          </div>
         )}
       </div>
     </div>

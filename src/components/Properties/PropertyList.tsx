@@ -10,6 +10,7 @@ interface PropertyListProps {
   onEdit: (property: Property) => void;
   onDelete: (property: Property) => void;
   onView: (property: Property) => void;
+  onViewEvaluations?: (property: Property) => void;
 }
 
 export const PropertyList: React.FC<PropertyListProps> = ({
@@ -18,6 +19,7 @@ export const PropertyList: React.FC<PropertyListProps> = ({
   onEdit,
   onDelete,
   onView,
+  onViewEvaluations,
 }) => {
   if (loading) {
     return (
@@ -50,6 +52,7 @@ export const PropertyList: React.FC<PropertyListProps> = ({
           onEdit={onEdit}
           onDelete={onDelete}
           onView={onView}
+          onViewEvaluations={onViewEvaluations}
         />
       ))}
     </div>

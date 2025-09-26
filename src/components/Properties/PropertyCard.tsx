@@ -5,7 +5,8 @@ import {
   CurrencyDollarIcon, 
   CalendarIcon,
   PencilIcon,
-  TrashIcon 
+  TrashIcon,
+  ClipboardDocumentListIcon
 } from '@heroicons/react/24/outline';
 
 interface PropertyCardProps {
@@ -13,6 +14,7 @@ interface PropertyCardProps {
   onEdit: (property: Property) => void;
   onDelete: (property: Property) => void;
   onView: (property: Property) => void;
+  onViewEvaluations?: (property: Property) => void;
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -20,6 +22,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   onEdit,
   onDelete,
   onView,
+  onViewEvaluations,
 }) => {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -66,6 +69,15 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
             >
               <PencilIcon className="w-5 h-5" />
             </button>
+            {onViewEvaluations && (
+              <button
+                onClick={() => onViewEvaluations(property)}
+                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                aria-label="View evaluations"
+              >
+                <ClipboardDocumentListIcon className="w-5 h-5" />
+              </button>
+            )}
             <button
               onClick={() => onDelete(property)}
               className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
