@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Camera, AlertCircle, Wifi, WifiOff } from 'lucide-react';
+import { Camera, CircleAlert as AlertCircle, Wifi, WifiOff } from 'lucide-react';
 import { CameraControls } from './CameraControls';
 import { MediaPreview } from './MediaPreview';
 import { LoadingSpinner } from '../UI/LoadingSpinner';
