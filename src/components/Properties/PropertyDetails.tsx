@@ -1,5 +1,6 @@
 import React from 'react';
 import { Property } from '../../types/property';
+import { MediaManager } from '../MediaCapture';
 import { 
   XMarkIcon,
   HomeIcon,
@@ -8,7 +9,8 @@ import {
   MapPinIcon,
   PencilIcon,
   TrashIcon,
-  ClipboardDocumentListIcon
+  ClipboardDocumentListIcon,
+  PhotoIcon
 } from '@heroicons/react/24/outline';
 
 interface PropertyDetailsProps {
@@ -18,6 +20,7 @@ interface PropertyDetailsProps {
   onDelete: (property: Property) => void;
   onViewEvaluations?: (property: Property) => void;
 }
+const [showMedia, setShowMedia] = useState(false);
 
 export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   property,
@@ -26,6 +29,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   onDelete,
   onViewEvaluations,
 }) => {
+  const [showMedia, setShowMedia] = useState(false);
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -44,6 +48,10 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
       minute: '2-digit',
     });
   };
+
+  if (showMedia) {
+    return <MediaManager propertyId={property.id} propertyAddress={property.address} />;
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -68,6 +76,13 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                 <ClipboardDocumentListIcon className="w-5 h-5" />
               </button>
             )}
+            <button
+              onClick={() => setShowMedia(true)}
+              className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+              aria-label="View media"
+            >
+              <PhotoIcon className="w-5 h-5" />
+            </button>
             <button
               onClick={() => onDelete(property)}
               className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
@@ -197,6 +212,12 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               View Evaluations
             </button>
           )}
+          <button
+            onClick={() => setShowMedia(true)}
+            className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+          >
+            View Media
+          </button>
           <button
             onClick={() => onEdit(property)}
             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
